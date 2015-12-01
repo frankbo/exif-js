@@ -493,7 +493,10 @@
         0x7A : 'captionWriter',
         0x69 : 'headline',
         0x74 : 'copyright',
-        0x0F : 'category'
+        0x0F : 'category',
+        0x5A : 'city',
+        0x5C : 'subLocation',
+        0x64 : 'primaryLocationCode'
     };
     function readIPTCData(file, startOffset, sectionLength){
         var dataView = new DataView(file);
