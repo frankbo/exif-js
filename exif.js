@@ -496,7 +496,8 @@
         0x0F : 'category',
         0x5A : 'city',
         0x5C : 'subLocation',
-        0x64 : 'primaryLocationCode'
+        0x64 : 'primaryLocationCode',
+        0x5F : 'provinceState'
     };
     function readIPTCData(file, startOffset, sectionLength){
         var dataView = new DataView(file);
