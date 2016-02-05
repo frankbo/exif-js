@@ -647,8 +647,32 @@
 
     function getStringFromDB(buffer, start, length) {
         var outstr = "";
-        for (n = start; n < start+length; n++) {
-            outstr += String.fromCharCode(buffer.getUint8(n));
+        var badString = "";
+        var goodString = "";
+
+        for (var n = start; n < start+length; n++) {
+            try {
+                // all non ascii chars
+                if ( buffer.getUint8(n) > 127 ) {
+                    // all tested first ISO-8859-1 getUint8(byte) start with 194 pr 195 necessary
+                    // otherwise it is a Windows-1252 encoding
+                    if (buffer.getUint8(n) === 194 || buffer.getUint8(n) === 195) {
+                        badString = String.fromCharCode(buffer.getUint8(n), buffer.getUint8(n+1));
+                        n += 1;
+                    }
+                    else {
+                        badString = String.fromCharCode(buffer.getUint8(n), buffer.getUint8(n+1), buffer.getUint8(n+2));
+                        n += 2;
+                    }
+                    goodString = decodeURIComponent(escape(badString));
+                } else {
+                    goodString = String.fromCharCode(buffer.getUint8(n));
+                }
+
+            } catch(e) {
+                goodString = String.fromCharCode(buffer.getUint8(n));
+            }
+            outstr += goodString;
         }
         return outstr;
     }
